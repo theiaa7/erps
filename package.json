@@ -1,0 +1,13 @@
+{
+  "name": "erps",
+  "private": true,
+  "scripts": {
+    "dev:all": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  },
+  "prisma": {
+  "seed": "node prisma/seed.js"
+    }
+}
