@@ -1,0 +1,4 @@
+db: bryanpyo_erps1
+us: bryanpyo_user
+pw: 3gbt6yrhf5rN!
+ht: localhost
