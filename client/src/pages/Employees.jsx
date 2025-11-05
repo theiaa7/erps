@@ -1,31 +1,34 @@
-import React from 'react'
-import { useQuery } from '@tanstack/react-query'
-import api from '../api/client'
-import Table from '../components/Table'
-
-async function fetchEmployees() {
-  const { data } = await api.get('/employees')
-  return data
-}
+import { useEffect, useState } from "react";
+import Table from "../components/Table";
 
 export default function Employees() {
-  const { data = [], isLoading } = useQuery(['employees'], fetchEmployees)
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/employees")
+      .then(res => res.json())
+      .then(data => {
+        setEmployees(data);
+        setLoading(false);
+      })
+      .catch(err => console.error(err));
+  }, []);
 
   const columns = [
-    { key: 'id', title: 'ID' },
-    { key: 'name', title: 'Name' },
-    { key: 'role', title: 'Role' },
-    { key: 'email', title: 'Email' },
-  ]
+    { header: "ID", accessor: "id" },
+    { header: "Name", accessor: "name" },
+    { header: "Role", accessor: "role" },
+    { header: "Email", accessor: "email" },
+  ];
+
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-semibold">Employees</h2>
-        <button className="px-3 py-2 bg-blue-600 text-white rounded">Add Employee</button>
-      </div>
-
-      {isLoading ? <div>Loading...</div> : <Table columns={columns} data={data} />}
+      <h2 className="text-xl font-semibold mb-4">Employees</h2>
+      <Table data={employees} columns={columns} />
     </div>
-  )
+  );
 }
